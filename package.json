@@ -1,12 +1,12 @@
 {
   "name": "black-lotus",
   "version": "1.0.0",
-  "description": "Site Oficial da Black Lótusn",
+  "description": "Site Oficial da Black Lótus",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
+    "express": "^4.18.2"
   }
 }
