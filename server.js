@@ -1,16 +1,13 @@
 const express = require('express');
-const path = require('path');
+const axios = require('axios');
 const app = express();
-
-const PORT = process.env.PORT || 3000;
-
-app.use(express.static(path.join(__dirname, 'BlackLotusSite')));
-
-const token = `K5VJ3UhWlzhIfHElDxCP`
+const token = `K5VJ3UhWlzhIfHElDxCP`;
 
 const config = {
   headers: { Authorization: `Bearer ${token}` }
 };
+
+app.use(express.static('BlackLotusSite'));
 
 app.get('/constellations', async (req, res) => {
   try {
@@ -20,5 +17,10 @@ app.get('/constellations', async (req, res) => {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
+});
 
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`Le serveur écoute sur le port ${port}`);
 });
