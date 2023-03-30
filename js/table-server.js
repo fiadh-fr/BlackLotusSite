@@ -1,5 +1,5 @@
 // Récupérer les données de l'API
-fetch('https://kikyo.website:1331/api/constellations')
+fetch('api/constellations')
   .then(response => response.json())
   .then(data => {
     // Filtrer les données par constellations
