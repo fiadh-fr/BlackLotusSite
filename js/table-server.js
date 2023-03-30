@@ -1,5 +1,5 @@
 // Récupérer les données de l'API
-fetch('api/constellations')
+fetch('/constellations')
   .then(response => response.json())
   .then(data => {
     // Filtrer les données par constellations
