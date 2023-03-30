@@ -11,7 +11,7 @@ app.use(express.static('BlackLotusSite'));
 
 app.get('/constellations', async (req, res) => {
   try {
-    const { data } = await axios.get('http://kikyo.website:1331/api/constellations', config);
+    const { data } = await axios.get('https://kikyo.website:1331/api/constellations', config);
     res.json(data);
   } catch (error) {
     console.error(error);
