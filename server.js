@@ -25,3 +25,6 @@ app.listen(port, () => {
   console.log(`Le serveur écoute sur le port ${port}`);
 
 });
+
+<tbody id="lynx-table">
+</tbody>
