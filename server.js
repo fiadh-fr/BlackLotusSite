@@ -7,6 +7,11 @@ const config = {
   headers: { Authorization: `Bearer ${token}` }
 };
 
+// définit la route pour la page 404
+app.use((req, res, next) => {
+  res.status(404).sendFile('404.html', { root: __dirname });
+});
+
 app.use(express.static('BlackLotusSite'));
 
 app.get('/constellations', async (req, res) => {
@@ -19,17 +24,8 @@ app.get('/constellations', async (req, res) => {
   }
 });
 
-// définit la route pour la page 404
-app.use((req, res, next) => {
-  res.status(404).sendFile("./404.html", { root: __dirname });
-});
-
+// démarre le serveur
 const port = process.env.PORT || 3000;
-
 app.listen(port, () => {
-  console.log(`Le serveur écoute sur le port ${port}`);
-
+  console.log(`Le serveur est en cours d'exécution sur le port ${port}...`);
 });
-
-<tbody id="lynx-table">
-</tbody>x
