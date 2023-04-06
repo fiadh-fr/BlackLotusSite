@@ -15,11 +15,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Gérer les erreurs 404
-app.use((req, res) => {
-  res.status(404).sendFile(path.join(__dirname, '404.html'));
-});
-
 app.use(express.static('BlackLotusSite'));
 
 app.get('/constellations', async (req, res) => {
@@ -30,6 +25,11 @@ app.get('/constellations', async (req, res) => {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
+});
+
+// Gérer les erreurs 404
+app.get('*', function(req, res){
+  res.send('404.html', 404);
 });
 
 // démarre le serveur
