@@ -1,15 +1,23 @@
 const express = require('express');
 const axios = require('axios');
 const app = express();
+const path = require('path');
 const token = `K5VJ3UhWlzhIfHElDxCP`;
 
 const config = {
   headers: { Authorization: `Bearer ${token}` }
 };
+// Servir les fichiers statiques à partir de la racine du projet
+app.use(express.static(path.join(__dirname)));
 
-// définit la route pour la page 404
-app.use((req, res, next) => {
-  res.status(404).sendFile('404/404.html', { root: __dirname });
+// Gérer la page d'accueil (index.html par défaut)
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Gérer les erreurs 404
+app.use((req, res) => {
+  res.status(404).sendFile(path.join(__dirname, '404.html'));
 });
 
 app.use(express.static('BlackLotusSite'));
