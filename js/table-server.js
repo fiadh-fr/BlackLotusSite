@@ -57,9 +57,13 @@ function addDataToTable(data, table) {
     // Création d'une nouvelle ligne dans la table
     const row = table.insertRow(-1);
 
-    // Ajout du nom d'affichage à la première colonne
+    // Ajout du nom d'affichage à la première colonne en tant que lien hypertexte
     const displayNameCell = row.insertCell(0);
-    displayNameCell.textContent = element.displayName;
+    const displayNameLink = document.createElement('a');
+    displayNameLink.href = element.invite;
+    displayNameLink.target = '_blank'; // ouvrir le lien dans une nouvelle fenêtre
+    displayNameLink.textContent = element.displayName;
+    displayNameCell.appendChild(displayNameLink);
 
     // Ajout du nombre de membres formaté à la deuxième colonne
     const membersCell = row.insertCell(1);
