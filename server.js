@@ -21,7 +21,7 @@ app.get('/constellations', async (req, res) => {
 
 // définit la route pour la page 404
 app.use((req, res, next) => {
-  res.status(404).sendFile(__dirname + '/public/404.html');
+  res.status(404).sendFile(__dirname + '404.html');
 });
 
 const port = process.env.PORT || 3000;
