@@ -202,7 +202,8 @@ button.button-secondary,
  * Default: #00629a
  */
 #notification {
-  background-color: #d1b7ff;
+  background-color: #ffcc33;
+  opacity: 100%;
 }
 
 /**
@@ -242,3 +243,4 @@ button.button-secondary,
 .members-table {
   width: 15%;
 }
+
