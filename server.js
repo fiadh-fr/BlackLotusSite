@@ -34,6 +34,6 @@ app.get('*', function(req, res){
 
 // démarre le serveur
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`Le serveur est en cours d'exécution sur le port ${port}...`);
 });
