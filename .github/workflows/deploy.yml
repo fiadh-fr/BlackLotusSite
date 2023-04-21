@@ -1,0 +1,18 @@
+name: Deploy to server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Rsync files to server
+      run: |
+        ssh ubuntu@152.67.78.50 "mkdir -p /var/www/blacklotus"
+        rsync -azP --delete $GITHUB_WORKSPACE/ ubuntu@152.67.78.50:/var/www/blacklotus
