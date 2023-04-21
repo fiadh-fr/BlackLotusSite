@@ -7,6 +7,7 @@ const token = `K5VJ3UhWlzhIfHElDxCP`;
 const config = {
   headers: { Authorization: `Bearer ${token}` }
 };
+
 // Servir les fichiers statiques à partir de la racine du projet
 app.use(express.static(path.join(__dirname)));
 
@@ -15,7 +16,8 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.use(express.static('BlackLotusSite'));
+// Servir les fichiers statiques à partir du dossier /var/www/blacklotus
+app.use(express.static('/var/www/blacklotus'));
 
 app.get('/constellations', async (req, res) => {
   try {
