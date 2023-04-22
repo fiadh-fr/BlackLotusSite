@@ -1,8 +1,22 @@
 const express = require('express');
 const axios = require('axios');
-const app = express();
 const path = require('path');
+const https = require('https');
+const http = require('http');
+const fs = require('fs')
+
 const token = `K5VJ3UhWlzhIfHElDxCP`;
+const options = {
+  key: fs.readFileSync('./ssl/key.pem', 'utf8'),
+  cert: fs.readFileSync('./ssl/cert.pem', 'utf8'),
+};
+const port = process.env.PORT || 443; // Mudei isso aqui
+
+const app = express();
+
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(options, app);
+
 
 const config = {
   headers: { Authorization: `Bearer ${token}` }
@@ -34,8 +48,17 @@ app.get('*', function(req, res){
   res.send('404.html', 404);
 });
 
+/*
 // démarre le serveur
-const port = process.env.PORT || 3000;
 app.listen(port, '0.0.0.0', () => {
   console.log(`Le serveur est en cours d'exécution sur le port ${port}...`);
 });
+
+ */
+httpServer.listen(80, () => {
+  console.log('HTTP Server running on port 80');
+})
+httpsServer.listen(port, () => {
+    console.log('HTTPS Server running on port 443');
+})
+console.log(`Plary esteve aqui..`)
