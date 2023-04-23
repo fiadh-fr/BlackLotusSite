@@ -10,17 +10,13 @@ const port = process.env.PORT || 443;
 
 const app = express();
 
-// Utilisation de Helmet pour la sécurité
-const helmet = require('helmet');
-app.use(helmet());
-
 // Utilisation de compression pour améliorer les performances
 const compression = require('compression');
 app.use(compression());
 
 // Utilisation de serve-static pour servir les fichiers statiques
 const serveStatic = require('serve-static');
-app.use(serveStatic(path.join(__dirname, 'public')));
+app.use(serveStatic(path.join(__dirname, './')));
 
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer({
@@ -44,7 +40,7 @@ app.get('/constellations', async (req, res) => {
 
 // Gérer les erreurs 404 avec une page personnalisée
 app.use(function(req, res, next) {
-  res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
+  res.status(404).sendFile(path.join(__dirname, './', '404.html'));
 });
 
 httpServer.listen(80, () => {
