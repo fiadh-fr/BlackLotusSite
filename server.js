@@ -6,8 +6,17 @@ const http = require('http');
 const fs = require('fs')
 
 const token = `K5VJ3UhWlzhIfHElDxCP`;
+const options = {
+  key: fs.readFileSync('./ssl/key.pem', 'utf8'),
+  cert: fs.readFileSync('./ssl/cert.pem', 'utf8'),
+};
+const port = process.env.PORT || 443; // Mudei isso aqui
 
 const app = express();
+
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(options, app);
+
 
 const config = {
   headers: { Authorization: `Bearer ${token}` }
@@ -34,9 +43,22 @@ app.get('/constellations', async (req, res) => {
   }
 });
 
-const port = process.env.PORT || 3000; // Utiliser le port 3000
+// Gérer les erreurs 404
+app.get('*', function(req, res){
+  res.send('404.html', 404);
+});
 
-// Démarrer le serveur
-app.listen(port, () => {
+/*
+// démarre le serveur
+app.listen(port, '0.0.0.0', () => {
   console.log(`Le serveur est en cours d'exécution sur le port ${port}...`);
 });
+
+ */
+httpServer.listen(80, () => {
+  console.log('HTTP Server running on port 80');
+})
+httpsServer.listen(port, () => {
+    console.log('HTTPS Server running on port 443');
+})
+console.log(`Server started`)
