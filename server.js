@@ -10,10 +10,6 @@ const port = process.env.PORT || 443;
 
 const app = express();
 
-// Utilisation de compression pour améliorer les performances
-const compression = require('compression');
-app.use(compression());
-
 // Utilisation de serve-static pour servir les fichiers statiques
 const serveStatic = require('serve-static');
 app.use(serveStatic(path.join(__dirname, './')));
