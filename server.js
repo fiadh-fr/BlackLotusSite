@@ -10,7 +10,7 @@ const options = {
   key: fs.readFileSync('./ssl/key.pem', 'utf8'),
   cert: fs.readFileSync('./ssl/cert.pem', 'utf8'),
 };
-const port = process.env.PORT || 443; // Mudei isso aqui
+const port = process.env.PORT || 3000;
 
 const app = express();
 
@@ -48,17 +48,10 @@ app.get('*', function(req, res){
   res.send('404.html', 404);
 });
 
-/*
-// démarre le serveur
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Le serveur est en cours d'exécution sur le port ${port}...`);
-});
+httpServer.listen(3000, () => {
+  console.log('Express server running on port 3000');
+})
 
- */
-httpServer.listen(80, () => {
-  console.log('HTTP Server running on port 80');
+httpsServer.listen(443, () => {
+    console.log('HTTPS server running on port 443');
 })
-httpsServer.listen(port, () => {
-    console.log('HTTPS Server running on port 443');
-})
-console.log(`Plary esteve aqui..`)
