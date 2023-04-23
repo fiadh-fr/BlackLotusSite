@@ -13,11 +13,10 @@ const numberFormat = new Intl.NumberFormat('pt-PT', {
   maximumFractionDigits: 0
 });
 
-// Récupération des données via une requête HTTP
-axios.get('https://kikyo.website:1331/api/constellations')
-  .then(response => {
-    const data = response.data;
-
+// Récupération des données depuis l'API
+axios.get('/constellations')
+  .then(response => response.data)
+  .then(data => {
     // Traitement des données pour chaque catégorie
     for (const category in data) {
       // Récupération des données de la catégorie
