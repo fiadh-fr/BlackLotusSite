@@ -39,10 +39,14 @@ function getData() {
 }
 
 
-const data = await getData()
+async function main() {
+  const data = await getData()
 
-for (const category in data) {
-  const categoryData = data[category];
-  categoryData.sort((a, b) => b.members - a.members);
-  addDataToTable(categoryData, tables.get(category));
+  for (const category in data) {
+      const categoryData = data[category];
+      categoryData.sort((a, b) => b.members - a.members);
+      addDataToTable(categoryData, tables.get(category));
+  }
 }
+
+main();
