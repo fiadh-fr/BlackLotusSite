@@ -1,9 +1,14 @@
+require('dotenv').config(); // Charger les variables d'environnement
+
 const express = require('express');
 const axios = require('axios');
 const path = require('path');
 const https = require('https');
 const http = require('http');
 const fs = require('fs')
+
+const token = process.env.API_TOKEN;
+const apiUrl = process.env.API_URL;
 
 const options = {
   key: fs.readFileSync('./ssl/key.pem', 'utf8'),
@@ -16,7 +21,7 @@ const app = express();
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(options, app);
 
-const servidoresFile = '/var/www/blacklotus/servidores.json';
+const servidoresFile = './servidores.json';
 
 // Servir les fichiers statiques à partir de la racine du projet
 app.use(express.static(path.join(__dirname)));
