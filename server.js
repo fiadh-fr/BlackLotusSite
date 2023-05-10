@@ -36,7 +36,7 @@ app.use(express.static('/var/www/blacklotus'));
 
 app.get('/constellations', async (req, res) => {
   try {
-    const { data } = await axios.get('https://kikyo.website:1331/api/constellations');
+    const { data } = await axios.get('https://kikyo.website:1331/api');
     fs.writeFile(servidoresFile, JSON.stringify(data), (err) => {
       if (err) {
         console.error(err);
