@@ -1,3 +1,5 @@
+document.addEventListener("DOMContentLoaded", function() {
+  
 // Récupération des éléments de tableau
 const hydrusTable = document.querySelector("#hydrus-table");
 const byakkoTable = document.querySelector("#byakko-table");
@@ -70,3 +72,5 @@ function addDataToTable(data, table) {
     membersCell.textContent = numberFormat.format(element.members);
   }
 }
+
+});
