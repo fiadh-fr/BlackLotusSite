@@ -6,58 +6,12 @@ const suzakuTable = document.querySelector("#suzaku-table");
 const genbuTable = document.querySelector("#genbu-table");
 const lynxTable = document.querySelector("#lynx-table");
 
-// Lecture du fichier JSON
-fetch("server.json")
-  .then(response => response.json())
-  .then(data => {
-    // Traitement des données pour chaque catégorie
-    for (const category in data) {
-      // Récupération des données de la catégorie
-      const categoryData = data[category];
-
-      // Tri des données par nombre de membres (décroissant)
-      categoryData.sort((a, b) => b.members - a.members);
-
-      // Création de la table pour la catégorie si elle contient des éléments
-      if (categoryData.length > 0) {
-        // Création d'une nouvelle table
-        const table = document.createElement("table");
-
-        // Ajout de l'en-tête de la table
-        const headerRow = table.insertRow(-1);
-        const displayNameHeader = headerRow.insertCell(0);
-        displayNameHeader.textContent = "Nom";
-        const membersHeader = headerRow.insertCell(1);
-        membersHeader.textContent = "Membres";
-
-        // Ajout des données à la table
-        addDataToTable(categoryData, table);
-
-        // Ajout de la table à la page
-        switch (category) {
-          case "Hydrus":
-            hydrusTable.appendChild(table);
-            break;
-          case "Byakko":
-            byakkoTable.appendChild(table);
-            break;
-          case "Seiryu":
-            seiryuTable.appendChild(table);
-            break;
-          case "Suzaku":
-            suzakuTable.appendChild(table);
-            break;
-          case "Genbu":
-            genbuTable.appendChild(table);
-            break;
-          case "Lynx":
-            lynxTable.appendChild(table);
-            break;
-        }
-      }
-    }
-  })
-  .catch(error => console.error(error));
+// Création d'un objet Intl.NumberFormat avec les options souhaitées
+const numberFormat = new Intl.NumberFormat('pt-PT', {
+  style: 'decimal',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0
+});
 
 // Fonction pour ajouter des données à une table
 function addDataToTable(data, table) {
@@ -79,3 +33,47 @@ function addDataToTable(data, table) {
     membersCell.textContent = numberFormat.format(element.members);
   }
 }
+
+// Désactivation des tableaux avant le chargement des données
+const tables = [hydrusTable, byakkoTable, seiryuTable, suzakuTable, genbuTable, lynxTable];
+tables.forEach(table => table.style.display = 'none');
+
+// Lecture du fichier JSON
+fetch("server.json")
+  .then(response => response.json())
+  .then(data => {
+    // Traitement des données pour chaque catégorie
+    for (const category in data) {
+      // Récupération des données de la catégorie
+      const categoryData = data[category];
+
+      // Tri des données par nombre de membres (décroissant)
+      categoryData.sort((a, b) => b.members - a.members);
+
+      // Ajout des données à la table correspondante
+      switch (category) {
+        case "Hydrus":
+          addDataToTable(categoryData, hydrusTable);
+          break;
+        case "Byakko":
+          addDataToTable(categoryData, byakkoTable);
+          break;
+        case "Seiryu":
+          addDataToTable(categoryData, seiryuTable);
+          break;
+        case "Suzaku":
+          addDataToTable(categoryData, suzakuTable);
+          break;
+        case "Genbu":
+          addDataToTable(categoryData, genbuTable);
+          break;
+        case "Lynx":
+          addDataToTable(categoryData, lynxTable);
+          break;
+      }
+    }
+
+    // Réactivation des tableaux après le chargement des données
+    tables.forEach(table => table.style.display = '');
+  })
+  .catch(error => console.error(error));
