@@ -13,31 +13,6 @@ const numberFormat = new Intl.NumberFormat('pt-PT', {
   maximumFractionDigits: 0
 });
 
-// Fonction pour ajouter des données à une table
-function addDataToTable(data, table) {
-  // Parcours des éléments de la catégorie
-  for (const element of data) {
-    // Création d'une nouvelle ligne dans la table
-    const row = table.insertRow(-1);
-
-    // Ajout du nom d'affichage à la première colonne en tant que lien hypertexte
-    const displayNameCell = row.insertCell(0);
-    const displayNameLink = document.createElement('a');
-    displayNameLink.href = element.invite;
-    displayNameLink.target = '_blank'; // ouvrir le lien dans une nouvelle fenêtre
-    displayNameLink.textContent = element.displayName;
-    displayNameCell.appendChild(displayNameLink);
-
-    // Ajout du nombre de membres formaté à la deuxième colonne
-    const membersCell = row.insertCell(1);
-    membersCell.textContent = numberFormat.format(element.members);
-  }
-}
-
-// Désactivation des tableaux avant le chargement des données
-const tables = [hydrusTable, byakkoTable, seiryuTable, suzakuTable, genbuTable, lynxTable];
-tables.forEach(table => table.style.display = 'none');
-
 // Lecture du fichier JSON
 fetch("server.json")
   .then(response => response.json())
@@ -72,8 +47,32 @@ fetch("server.json")
           break;
       }
     }
-
-    // Réactivation des tableaux après le chargement des données
-    tables.forEach(table => table.style.display = '');
   })
   .catch(error => console.error(error));
+
+// Fonction pour ajouter des données à une table
+function addDataToTable(data, table) {
+  // Supprimer la classe "hidden" de la table
+  table.classList.remove("hidden");
+  
+  // Supprimer le contenu existant de la table
+  table.innerHTML = "";
+
+  // Parcours des éléments de la catégorie
+  for (const element of data) {
+    // Création d'une nouvelle ligne dans la table
+    const row = table.insertRow(-1);
+
+    // Ajout du nom d'affichage à la première colonne en tant que lien hypertexte
+    const displayNameCell = row.insertCell(0);
+    const displayNameLink = document.createElement('a');
+    displayNameLink.href = element.invite;
+    displayNameLink.target = '_blank'; // ouvrir le lien dans une nouvelle fenêtre
+    displayNameLink.textContent = element.displayName;
+    displayNameCell.appendChild(displayNameLink);
+
+    // Ajout du nombre de membres formaté à la deuxième colonne
+    const membersCell = row.insertCell(1);
+    membersCell.textContent = numberFormat.format(element.members);
+  }
+}
