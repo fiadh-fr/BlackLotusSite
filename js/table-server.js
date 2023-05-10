@@ -52,12 +52,6 @@ fetch("server.json")
 
 // Fonction pour ajouter des données à une table
 function addDataToTable(data, table) {
-  // Supprimer la classe "hidden" de la table
-  table.classList.remove("hidden");
-  
-  // Supprimer le contenu existant de la table
-  table.innerHTML = "";
-
   // Parcours des éléments de la catégorie
   for (const element of data) {
     // Création d'une nouvelle ligne dans la table
