@@ -5,22 +5,18 @@ const https = require('https');
 const http = require('http');
 const fs = require('fs')
 
-const token = `K5VJ3UhWlzhIfHElDxCP`;
 const options = {
   key: fs.readFileSync('./ssl/key.pem', 'utf8'),
   cert: fs.readFileSync('./ssl/cert.pem', 'utf8'),
 };
-const port = process.env.PORT || 443; // Mudei isso aqui
+const port = process.env.PORT || 443; 
 
 const app = express();
 
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(options, app);
 
-
-const config = {
-  headers: { Authorization: `Bearer ${token}` }
-};
+const servidoresFile = '/var/www/blacklotus/servidores.json';
 
 // Servir les fichiers statiques à partir de la racine du projet
 app.use(express.static(path.join(__dirname)));
@@ -35,7 +31,15 @@ app.use(express.static('/var/www/blacklotus'));
 
 app.get('/constellations', async (req, res) => {
   try {
-    const { data } = await axios.get('https://kikyo.website:1331/api/constellations', config);
+    const { data } = await axios.get('https://kikyo.website:1331/api/constellations');
+    fs.writeFile(servidoresFile, JSON.stringify(data), (err) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+      } else {
+        console.log(`File ${servidoresFile} written successfully!`);
+      }
+    });
     res.json(data);
   } catch (error) {
     console.error(error);
