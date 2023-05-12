@@ -1,10 +1,12 @@
-// Récupération des éléments de tableau
+// Récupération des éléments HTML
 const hydrusTable = document.querySelector("#hydrus-table");
 const byakkoTable = document.querySelector("#byakko-table");
 const seiryuTable = document.querySelector("#seiryu-table");
 const suzakuTable = document.querySelector("#suzaku-table");
 const genbuTable = document.querySelector("#genbu-table");
 const lynxTable = document.querySelector("#lynx-table");
+const serversTotal = document.querySelector("#servers-total");
+const membersTotal = document.querySelector("#members-total");
 
 // Création d'un objet Intl.NumberFormat avec les options souhaitées
 const numberFormat = new Intl.NumberFormat('pt-PT', {
@@ -17,8 +19,9 @@ const numberFormat = new Intl.NumberFormat('pt-PT', {
 fetch("server.json")
   .then(response => response.json())
   .then(data => {
-    let serversTotal = 0;
-    let membersTotal = 0;
+    // Initialisation des variables pour le total de serveurs et de membres
+    let totalServers = 0;
+    let totalMembers = 0;
 
     // Traitement des données pour chaque catégorie
     for (const category in data) {
@@ -50,20 +53,14 @@ fetch("server.json")
           break;
       }
 
-      // Calcul du nombre total de serveurs et de membres
-      const categoryServers = categoryData.length;
-      const categoryMembers = categoryData.reduce((acc, cur) => acc + cur.members, 0);
-
-      serversTotal += categoryServers;
-      membersTotal += categoryMembers;
+      // Mise à jour du total de serveurs et de membres
+      totalServers += categoryData.length;
+      totalMembers += categoryData.reduce((acc, cur) => acc + cur.members, 0);
     }
 
-    // Affichage des totaux
-    const serversTotalElement = document.querySelector("#servers-total");
-    serversTotalElement.textContent = serversTotal;
-
-    const membersTotalElement = document.querySelector("#members-total");
-    membersTotalElement.textContent = numberFormat.format(membersTotal);
+    // Mise à jour du HTML avec les totaux
+    serversTotal.textContent = numberFormat.format(totalServers);
+    membersTotal.textContent = numberFormat.format(totalMembers);
   })
   .catch(error => console.error(error));
 
