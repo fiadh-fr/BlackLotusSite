@@ -51,10 +51,9 @@ app.get('/constellations', async (req, res) => {
 
 // Gérer les erreurs 404
 app.use(function(req, res, next) {
-  res.status(404).sendFile(__dirname + '/404.html');
+  res.status(404);
+  res.redirect('/404.html');
 });
-
-
 
 /*
 // démarre le serveur
