@@ -31,9 +31,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Servir les fichiers statiques à partir du dossier /var/www/blacklotus
-app.use(express.static('/var/www/blacklotus'));
-
 app.get('/constellations', async (req, res) => {
   try {
     const { data } = await axios.get('https://kikyo.website:1331/api');
