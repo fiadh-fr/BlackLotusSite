@@ -49,14 +49,11 @@ app.get('/constellations', async (req, res) => {
   }
 });
 
-app.set('view engine', 'ejs');
-
-app.set('views', path.join(__dirname, 'views'));
-
 // Gérer les erreurs 404
-app.use((req, res, next) => {
-  res.status(404).render('404', { url: req.originalUrl });
+app.use(function(req, res, next) {
+  res.status(404).sendFile(__dirname + '/404.html');
 });
+
 
 
 /*
