@@ -17,6 +17,9 @@ const numberFormat = new Intl.NumberFormat('pt-PT', {
 fetch("server.json")
   .then(response => response.json())
   .then(data => {
+    let serversTotal = 0;
+    let membersTotal = 0;
+
     // Traitement des données pour chaque catégorie
     for (const category in data) {
       // Récupération des données de la catégorie
@@ -46,7 +49,21 @@ fetch("server.json")
           addDataToTable(categoryData, lynxTable);
           break;
       }
+
+      // Calcul du nombre total de serveurs et de membres
+      const categoryServers = categoryData.length;
+      const categoryMembers = categoryData.reduce((acc, cur) => acc + cur.members, 0);
+
+      serversTotal += categoryServers;
+      membersTotal += categoryMembers;
     }
+
+    // Affichage des totaux
+    const serversTotalElement = document.querySelector("#servers-total");
+    serversTotalElement.textContent = serversTotal;
+
+    const membersTotalElement = document.querySelector("#members-total");
+    membersTotalElement.textContent = numberFormat.format(membersTotal);
   })
   .catch(error => console.error(error));
 
