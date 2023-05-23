@@ -1,4 +1,4 @@
-// Récupération des éléments HTML
+// Récupération de l'élément contenant les onglets
 const tabGroup = document.querySelector(".tab-group-switch-style");
 
 // Lecture du fichier JSON
@@ -21,9 +21,24 @@ fetch("server.json")
       serverContainer.className = "server-container";
 
       // Parcours des serveurs de la constellation
+      let serverCount = 0; // Compteur pour le nombre de serveurs créés
+      let row = document.createElement("div"); // Nouvelle ligne
+      row.className = "column-row align-center-bottom";
+
       constellationData.forEach((server) => {
         const serverBox = createServerBox(server);
-        serverContainer.appendChild(serverBox);
+        row.appendChild(serverBox);
+        serverCount++;
+
+        // Vérifier si on a atteint 3 serveurs par ligne ou si c'est le dernier serveur
+        if (serverCount % 3 === 0 || serverCount === constellationData.length) {
+          // Ajouter la ligne au conteneur des serveurs
+          serverContainer.appendChild(row);
+
+          // Créer une nouvelle ligne pour les serveurs suivants
+          row = document.createElement("div");
+          row.className = "column-row align-center-bottom";
+        }
       });
 
       // Ajout du conteneur à l'élément de tabulation
