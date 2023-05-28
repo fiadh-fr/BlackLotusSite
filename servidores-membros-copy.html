@@ -75,27 +75,76 @@
 						<p>
 							Lista de todos os servidores inscritos e membros de nossa rede.
 					</header>
-					<div class="tab-group tab-group-switch-style">
-						<div class="tab-item" data-title="Hydrus" id="">
-						  <!-- Contenu de la constellation Hydrus -->
-						</div>
-						<div class="tab-item" data-title="Byakko" id="">
-							<!-- Contenu de la constellation Byakko -->
-						</div>
-						<div class="tab-item" data-title="Seiryu" id="">
-							<!-- Contenu de la constellation Seiryu -->
-						</div>
-						<div class="tab-item" data-title="Suzaku" id="">
-							<!-- Contenu de la constellation Suzaku -->
-						</div>
-						<div class="tab-item" data-title="Genbu" id="">
-							<!-- Contenu de la constellation Genbu -->
-						</div>
-						<div class="tab-item" data-title="Lynx" id="">
-							<!-- Contenu de la constellation Lynx -->
-						</div>
-					  </div>					  
-						</div>
+									<div class="tab-group tab-group-switch-style">
+										<script>
+const jsonData = require('./server.json');
+
+const html = `
+<div class="tab-group tab-group-switch-style">
+`;
+
+for (const constellation of jsonData.constellations) {
+  const tabItem = `
+    <div class="tab-item" data-title="${constellation.name}" id="${constellation.name}">
+  `;
+
+  for (const server of constellation.servers) {
+    const isBooster = server.booster;
+    const icon = server.icon.replace('?size=1024', '');
+    const displayName = server.displayName;
+    const members = server.members;
+    const tags = server.tags.join(' ');
+    const invite = server.invite;
+
+    const productBox = isBooster ? `
+      <div class="product-box product-box-popular">
+        <div class="product-popular">Em destaque</div>
+    ` : `
+      <div class="product-box">
+    `;
+
+    const profileContainer = `
+      <div class="profile-container">
+        <div class="profile-pic">
+          <img src="${icon}" />
+        </div>
+        <div class="profile-text">
+          <h3><mark>${displayName}</mark></h3>
+          <small class="text-color-gray"><strong>${members}</strong> membros</small>
+          <ul class="tags" style="margin-top: 5px">
+            <li><a href="#anime">${tags}</a></li>
+          </ul>
+        </div>
+      </div>
+    `;
+
+    const productOrder = `
+      <div class="product-order">
+        <div class="profile-button">
+          <a href="${invite}" target="_blank" class="button button-primary" style="text-align: center; margin-top: -5%; margin-bottom: -5%;">
+            <i class="fab fa-discord icon-left"></i>Entrar
+          </a>
+        </div>
+      </div>
+    `;
+
+    const product = `
+      ${productBox}
+        ${profileContainer}
+        ${productOrder}
+      ${productBox}
+    `;
+
+    html += tabItem + product + `</div>`;
+  }
+}
+
+html += `</div>`;
+
+document.querySelector('.communities').innerHTML = html;
+
+										</script>
+									</div>
 					<div class="column-row align-center">
 						<div class="column-50 text-align-center">
 							<p>
