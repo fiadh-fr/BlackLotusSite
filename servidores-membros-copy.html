@@ -77,7 +77,18 @@
 					</header>
 									<div class="tab-group tab-group-switch-style">
 										<script>
-const jsonData = require('./server.json');
+import axios from 'axios';
+
+const getJsonData = async () => {
+  const response = await axios.get('./data.json');
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    throw new Error('Error loading JSON data');
+  }
+};
+
+const jsonData = await getJsonData();
 
 const html = `
 <div class="tab-group tab-group-switch-style">
@@ -142,7 +153,6 @@ for (const constellation of jsonData.constellations) {
 html += `</div>`;
 
 document.querySelector('.communities').innerHTML = html;
-
 										</script>
 									</div>
 					<div class="column-row align-center">
@@ -273,7 +283,6 @@ document.querySelector('.communities').innerHTML = html;
 			</section>
 		</footer>
 		<!-- Scripts -->
-		<script src="js/server-list.js"></script>
 		<script src="js/widget-bot.js"></script>
 		<script src="js/right-click.js"></script>
 		<script src="js/jquery.min.js"></script>
