@@ -11,7 +11,7 @@ fetch("server.json")
   .then(response => response.json())
   .then(data => {
     // Traitement des données pour chaque catégorie
-    for (const category of data.constellations) {
+    for (const category of data.constelations) {
       // Récupération des données de la catégorie
       const categoryData = data[category.name];
 
