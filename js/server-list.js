@@ -10,48 +10,67 @@ const lynxTab = document.querySelector("#lynx-tab");
 fetch("server.json")
   .then(response => response.json())
   .then(data => {
-    if (!Object.keys(data)) {
-      console.log("n/a");
+    if (!data.constellations) {
+      console.log("No data available.");
       return;
     }
+// Traitement des données pour chaque catégorie
+for (const category in data) {
+  // Récupération des données de la catégorie
+  const categoryData = data[category];
 
-    // Traitement des données pour chaque catégorie
-    for (const category of Object.keys(data)) {
-      // Récupération des données de la catégorie
-      const categoryData = data[category.name] || [];
+  // Tri des données par nombre de membres (décroissant)
+  categoryData.sort((a, b) => b.members - a.members);
 
-      // ...
+      // Tri des données par nombre de membres (décroissant)
+      categoryData.sort((a, b) => b.members - a.members);
+
+      // Création du conteneur pour la catégorie
+      const categoryContainer = document.createElement('div');
+      categoryContainer.className = 'category-container';
 
       // Vérification du booster
       const boosterData = categoryData.filter(server => server.booster === true);
-      const nonBoosterData = categoryData.filter(server => server.booster !== true);
+      const nonBoosterData = categoryData.filter(server => server.booster !== false);
 
-      // ...
+      // Ajout des serveurs booster
+      boosterData.forEach(server => {
+        const serverHtml = createServerHTML(server);
+        categoryContainer.appendChild(serverHtml);
+      });
 
-      // Sélection de l'onglet correspondant et ajout du contenu
-      switch (category.name) {
-        case "Hydrus":
-          hydrusTab.appendChild(categoryContainer);
-          break;
-        case "Byakko":
-          byakkoTab.appendChild(categoryContainer);
-          break;
-        case "Seiryu":
-          seiryuTab.appendChild(categoryContainer);
-          break;
-        case "Suzaku":
-          suzakuTab.appendChild(categoryContainer);
-          break;
-        case "Genbu":
-          genbuTab.appendChild(categoryContainer);
-          break;
-        case "Lynx":
-          lynxTab.appendChild(categoryContainer);
-          break;
-      }
-    }
-  })
-  .catch(error => console.error(error));
+      // Ajout des autres serveurs
+      nonBoosterData.forEach(server => {
+        const serverHtml = createServerHTML(server);
+        categoryContainer.appendChild(serverHtml);
+      });
+
+            // Sélection de l'onglet correspondant et ajout du contenu
+            switch (category.name) {
+              case "Hydrus":
+                hydrusTab.appendChild(categoryContainer);
+                break;
+              case "Byakko":
+                byakkoTab.appendChild(categoryContainer);
+                break;
+              case "Seiryu":
+                seiryuTab.appendChild(categoryContainer);
+                break;
+              case "Suzaku":
+                suzakuTab.appendChild(categoryContainer);
+                break;
+              case "Genbu":
+                genbuTab.appendChild(categoryContainer);
+                break;
+              case "Lynx":
+                lynxTab.appendChild(categoryContainer);
+                break;
+            }
+          }
+        })
+        .catch(error => console.error(error));
+
+
 // Création du HTML pour un serveur
 function createServerHTML(server) {
   const serverHtml = document.createElement('div');
