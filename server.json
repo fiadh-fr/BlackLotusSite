@@ -613,7 +613,7 @@
                 "notified": true,
                 "notify": true,
                 "booster": true,
-                "tags":["animes", "games"]
+                "tags":["animes", "games"],
                 "timer": 1684980844011
             }
         },
