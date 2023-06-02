@@ -10,33 +10,23 @@ const lynxTab = document.querySelector("#lynx");
 fetch("server.json")
   .then(response => response.json())
   .then(data => {
+    if (!data.constellations) {
+      console.log("No data available.");
+      return;
+    }
+
     // Traitement des données pour chaque catégorie
-    for (const category of data.constelations) {
+    for (const category of data.constellations) {
       // Récupération des données de la catégorie
-      const categoryData = data[category.name];
+      const categoryData = data[category.name] || [];
 
-      // Tri des données par nombre de membres (décroissant)
-      categoryData.sort((a, b) => b.members - a.members);
-
-      // Création du conteneur pour la catégorie
-      const categoryContainer = document.createElement('div');
-      categoryContainer.className = 'category-container';
+      // ...
 
       // Vérification du booster
       const boosterData = categoryData.filter(server => server.booster === true);
       const nonBoosterData = categoryData.filter(server => server.booster !== true);
 
-      // Ajout des serveurs booster
-      boosterData.forEach(server => {
-        const serverHtml = createServerHTML(server);
-        categoryContainer.appendChild(serverHtml);
-      });
-
-      // Ajout des autres serveurs
-      nonBoosterData.forEach(server => {
-        const serverHtml = createServerHTML(server);
-        categoryContainer.appendChild(serverHtml);
-      });
+      // ...
 
       // Sélection de l'onglet correspondant et ajout du contenu
       switch (category.name) {
@@ -62,7 +52,6 @@ fetch("server.json")
     }
   })
   .catch(error => console.error(error));
-
 // Création du HTML pour un serveur
 function createServerHTML(server) {
   const serverHtml = document.createElement('div');
