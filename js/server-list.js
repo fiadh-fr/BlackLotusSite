@@ -1,7 +1,7 @@
 // Récupération des éléments HTML
 const hydrusTab = document.querySelector("#hydrus-tab");
 const byakkoTab = document.querySelector("#byakko-tab");
-const seiryuTab = document.querySelector("#seiryu-tab);
+const seiryuTab = document.querySelector("#seiryu-tab");
 const suzakuTab = document.querySelector("#suzaku-tab");
 const genbuTab = document.querySelector("#genbu-tab");
 const lynxTab = document.querySelector("#lynx-tab");
