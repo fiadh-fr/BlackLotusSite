@@ -1,10 +1,10 @@
 // Récupération des éléments HTML
-const hydrusTab = document.querySelector("#hydrus");
-const byakkoTab = document.querySelector("#byakko");
-const seiryuTab = document.querySelector("#seiryu");
-const suzakuTab = document.querySelector("#suzaku");
-const genbuTab = document.querySelector("#genbu");
-const lynxTab = document.querySelector("#lynx");
+const hydrusTab = document.querySelector("#hydrus-tab");
+const byakkoTab = document.querySelector("#byakko-tab");
+const seiryuTab = document.querySelector("#seiryu-tab");
+const suzakuTab = document.querySelector("#suzaku-tab");
+const genbuTab = document.querySelector("#genbu-tab");
+const lynxTab = document.querySelector("#lynx-tab");
 
 // Lecture du fichier JSON
 fetch("server.json")
