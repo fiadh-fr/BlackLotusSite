@@ -1,78 +1,143 @@
-const jsonData = `YOUR_JSON_DATA_HERE`;
+// Récupération des éléments HTML
+const hydrusTab = document.querySelector("#hydrus");
+const byakkoTab = document.querySelector("#byakko");
+const seiryuTab = document.querySelector("#seiryu");
+const suzakuTab = document.querySelector("#suzaku");
+const genbuTab = document.querySelector("#genbu");
+const lynxTab = document.querySelector("#lynx");
 
-// Parse JSON data
-const data = JSON.parse(jsonData);
+// Lecture du fichier JSON
+fetch("server.json")
+  .then(response => response.json())
+  .then(data => {
+    // Traitement des données pour chaque catégorie
+    for (const category of data.constellations) {
+      // Récupération des données de la catégorie
+      const categoryData = data[category.name];
 
-// Group servers by constellation
-const constellations = {
-  Hydrus: [],
-  Byakko: [],
-  Seiryu: [],
-  Suzaku: [],
-  Genbu: [],
-  Lynx: []
-};
+      // Tri des données par nombre de membres (décroissant)
+      categoryData.sort((a, b) => b.members - a.members);
 
-data.servers.forEach(server => {
-  const { constellation } = server;
-  const { name } = constellation;
+      // Création du conteneur pour la catégorie
+      const categoryContainer = document.createElement('div');
+      categoryContainer.className = 'category-container';
 
-  if (constellations.hasOwnProperty(name)) {
-    constellations[name].push(server);
-  }
-});
+      // Vérification du booster
+      const boosterData = categoryData.filter(server => server.booster === true);
+      const nonBoosterData = categoryData.filter(server => server.booster !== true);
 
-// Generate HTML for each constellation
-let html = '';
-Object.entries(constellations).forEach(([constellation, servers]) => {
-  html += `<div class="tab-item" data-title="${constellation.toLowerCase()}" id="${constellation.toLowerCase()}">\n`;
+      // Ajout des serveurs booster
+      boosterData.forEach(server => {
+        const serverHtml = createServerHTML(server);
+        categoryContainer.appendChild(serverHtml);
+      });
 
-  let serverCount = 0;
-  servers.forEach(server => {
-    const { displayName, members, icon, tags, invite, booster } = server;
+      // Ajout des autres serveurs
+      nonBoosterData.forEach(server => {
+        const serverHtml = createServerHTML(server);
+        categoryContainer.appendChild(serverHtml);
+      });
 
-    if (serverCount % 3 === 0) {
-      html += `  <div class="column-row align-center-bottom">\n`;
+      // Sélection de l'onglet correspondant et ajout du contenu
+      switch (category.name) {
+        case "Hydrus":
+          hydrusTab.appendChild(categoryContainer);
+          break;
+        case "Byakko":
+          byakkoTab.appendChild(categoryContainer);
+          break;
+        case "Seiryu":
+          seiryuTab.appendChild(categoryContainer);
+          break;
+        case "Suzaku":
+          suzakuTab.appendChild(categoryContainer);
+          break;
+        case "Genbu":
+          genbuTab.appendChild(categoryContainer);
+          break;
+        case "Lynx":
+          lynxTab.appendChild(categoryContainer);
+          break;
+      }
     }
+  })
+  .catch(error => console.error(error));
 
-    html += `    <div class="column-33">\n`;
-    html += booster ? `      <div class="product-box product-box-popular">\n` : `      <div class="product-box">\n`;
-    html += booster ? `        <div class="product-popular">Em destaque</div>\n` : '';
-    html += `        <div class="profile-container">\n`;
-    html += `          <div class="profile-pic">\n`;
-    html += `            <img src="${icon.replace('?size=1024', '')}" />\n`;
-    html += `          </div>\n`;
-    html += `          <div class="profile-text">\n`;
-    html += `            <h3><mark>${displayName}</mark></h3>\n`;
-    html += `            <small class="text-color-gray"><strong>${members.toLocaleString()}' membros</strong></small>\n`;
-    html += `            <ul class="tags" style="margin-top: 5px">\n`;
-    tags.forEach(tag => {
-      html += `              <li>\n`;
-      html += `                <a href="#${tag.toLowerCase()}">#${tag.toLowerCase()}</a>\n`;
-      html += `              </li>\n`;
-    });
-    html += `            </ul>\n`;
-    html += `          </div>\n`;
-    html += `        </div>\n`;
-    html += `        <div class="product-order">\n`;
-    html += `          <div class="profile-button">\n`;
-    html += `            <a href="${invite}" target="_blank" class="button button-primary" style="text-align: center; margin-top: -5%; margin-bottom: -5%;">\n`;
-    html += `              <i class="fab fa-discord icon-left"></i>Entrar\n`;
-    html += `            </a>\n`;
-    html += `          </div>\n`;
-    html += `        </div>\n`;
-    html += `      </div>\n`;
-    html += `    </div>\n`;
+// Création du HTML pour un serveur
+function createServerHTML(server) {
+  const serverHtml = document.createElement('div');
+  serverHtml.className = server.booster ? 'product-box product-box-popular' : 'product-box';
 
-    serverCount++;
+  const profileContainer = document.createElement('div');
+  profileContainer.className = 'profile-container';
 
-    if (serverCount % 3 === 0 || serverCount === servers.length) {
-      html += `  </div>\n`;
-    }
+  const profilePic = document.createElement('div');
+  profilePic.className = 'profile-pic';
+  const imgSrc = server.icon.replace('?size=1024', '');
+  const imgElement = document.createElement('img');
+  imgElement.src = imgSrc;
+  profilePic.appendChild(imgElement);
+  profileContainer.appendChild(profilePic);
+
+  const profileText = document.createElement('div');
+  profileText.className = 'profile-text';
+
+  const displayName = document.createElement('h3');
+  const displayNameMark = document.createElement('mark');
+  displayNameMark.textContent = server.displayName;
+  displayName.appendChild(displayNameMark);
+  profileText.appendChild(displayName);
+
+  const members = document.createElement('small');
+  members.className = 'text-color-gray';
+  const membersStrong = document.createElement('strong');
+  membersStrong.textContent = formatNumber(server.members);
+  members.appendChild(membersStrong);
+  members.innerHTML += " membros";
+  profileText.appendChild(members);
+
+  const tags = document.createElement('ul');
+  tags.className = 'tags';
+  tags.style.marginTop = '5px';
+  server.tags.forEach(tag => {
+    const tagItem = document.createElement('li');
+    const tagLink = document.createElement('a');
+    tagLink.href = '#' + tag;
+    tagLink.textContent = '#' + tag;
+    tagItem.appendChild(tagLink);
+    tags.appendChild(tagItem);
   });
+  profileText.appendChild(tags);
 
-  html += `</div>\n`;
-});
+  profileContainer.appendChild(profileText);
+  serverHtml.appendChild(profileContainer);
 
-// Output generated HTML
-console.log(html);
+  const productOrder = document.createElement('div');
+  productOrder.className = 'product-order';
+
+  const profileButton = document.createElement('div');
+  profileButton.className = 'profile-button';
+
+  const inviteLink = document.createElement('a');
+  inviteLink.href = server.invite;
+  inviteLink.target = '_blank';
+  inviteLink.className = 'button button-primary';
+  inviteLink.style.textAlign = 'center';
+  inviteLink.style.marginTop = '-5%';
+  inviteLink.style.marginBottom = '-5%';
+  const icon = document.createElement('i');
+  icon.className = 'fab fa-discord icon-left';
+  inviteLink.appendChild(icon);
+  inviteLink.innerHTML += 'Entrar';
+
+  profileButton.appendChild(inviteLink);
+  productOrder.appendChild(profileButton);
+  serverHtml.appendChild(productOrder);
+
+  return serverHtml;
+}
+
+// Formatage des nombres avec apostrophe
+function formatNumber(number) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+}
