@@ -1,10 +1,10 @@
 // Récupération des éléments HTML
-const hydrusTab = document.querySelector("#hydrus-tab");
-const byakkoTab = document.querySelector("#byakko-tab");
-const seiryuTab = document.querySelector("#seiryu-tab");
-const suzakuTab = document.querySelector("#suzaku-tab");
-const genbuTab = document.querySelector("#genbu-tab");
-const lynxTab = document.querySelector("#lynx-tab");
+const hydrusTab = document.querySelector("#hydrus");
+const byakkoTab = document.querySelector("#byakko");
+const seiryuTab = document.querySelector("#seiryu");
+const suzakuTab = document.querySelector("#suzaku");
+const genbuTab = document.querySelector("#genbu");
+const lynxTab = document.querySelector("#lynx");
 
 // Lecture du fichier JSON
 fetch("server.json")
@@ -23,71 +23,84 @@ fetch("server.json")
       // ...
 
       // Vérification du booster
-      const boosterData = categoryData.filter(server => server.booster === true);
-      const nonBoosterData = categoryData.filter(server => server.booster !== true);
+      const boosterData = categoryData.filter(server => server.partnerships.booster === true);
+      const nonBoosterData = categoryData.filter(server => server.partnerships.booster !== true);
 
       // ...
 
       // Sélection de l'onglet correspondant et ajout du contenu
       switch (category.name) {
         case "Hydrus":
-          hydrusTab.appendChild(categoryContainer);
+          appendServersToTab(categoryData, hydrusTab);
           break;
         case "Byakko":
-          byakkoTab.appendChild(categoryContainer);
+          appendServersToTab(categoryData, byakkoTab);
           break;
         case "Seiryu":
-          seiryuTab.appendChild(categoryContainer);
+          appendServersToTab(categoryData, seiryuTab);
           break;
         case "Suzaku":
-          suzakuTab.appendChild(categoryContainer);
+          appendServersToTab(categoryData, suzakuTab);
           break;
         case "Genbu":
-          genbuTab.appendChild(categoryContainer);
+          appendServersToTab(categoryData, genbuTab);
           break;
         case "Lynx":
-          lynxTab.appendChild(categoryContainer);
+          appendServersToTab(categoryData, lynxTab);
           break;
       }
     }
   })
   .catch(error => console.error(error));
+
+// Ajout des serveurs à l'onglet correspondant
+function appendServersToTab(servers, tab) {
+  const categoryContainer = document.createElement("div");
+
+  servers.forEach(server => {
+    const serverHtml = createServerHTML(server);
+    categoryContainer.appendChild(serverHtml);
+  });
+
+  tab.appendChild(categoryContainer);
+}
+
 // Création du HTML pour un serveur
 function createServerHTML(server) {
-  const serverHtml = document.createElement('div');
-  serverHtml.className = server.booster ? 'product-box product-box-popular' : 'product-box';
+  const serverHtml = document.createElement("div");
+  serverHtml.className = server.partnerships.booster ? "product-box product-box-popular" : "product-box";
 
-  const profileContainer = document.createElement('div');
-  profileContainer.className = 'profile-container';
+  const profileContainer = document.createElement("div");
+  profileContainer.className = "profile-container";
 
-  const profilePic = document.createElement('div');
-  profilePic.className = 'profile-pic';
-  const imgSrc = server.icon.replace('?size=1024', '');
-  const imgElement = document.createElement('img');
+  const profilePic = document.createElement("div");
+  profilePic.className = "profile-pic";
+  const imgSrc = server.icon.replace("?size=1024", "");
+  const imgElement = document.createElement("img");
   imgElement.src = imgSrc;
   profilePic.appendChild(imgElement);
   profileContainer.appendChild(profilePic);
 
-  const profileText = document.createElement('div');
-  profileText.className = 'profile-text';
+  const profileText = document.createElement("div");
+  profileText.className = "profile-text";
 
-  const displayName = document.createElement('h3');
-  const displayNameMark = document.createElement('mark');
-  displayNameMark.textContent = server.displayName;
+  const displayName = document.createElement("h3");
+  const displayNameMark = document.createElement("mark");
+  displayNameMark.textContent = server.displayName || "n/a";
   displayName.appendChild(displayNameMark);
   profileText.appendChild(displayName);
 
-  const members = document.createElement('small');
-  members.className = 'text-color-gray';
-  const membersStrong = document.createElement('strong');
+  const members = document.createElement("small");
+  members.className = "text-color-gray";
+  const membersStrong = document.createElement("strong");
   membersStrong.textContent = formatNumber(server.members);
   members.appendChild(membersStrong);
   members.innerHTML += " membros";
   profileText.appendChild(members);
 
-  const tags = document.createElement('ul');
-  tags.className = 'tags';
-  tags.style.marginTop = '5px';
+  const tags = document.createElement("ul");
+  tags.className = "tags";
+  tags.style.marginTop = "5px";
   server.tags.forEach(tag => {
     const tagItem = document.createElement('li');
     const tagLink = document.createElement('a');
@@ -101,32 +114,10 @@ function createServerHTML(server) {
   profileContainer.appendChild(profileText);
   serverHtml.appendChild(profileContainer);
 
-  const productOrder = document.createElement('div');
-  productOrder.className = 'product-order';
-
-  const profileButton = document.createElement('div');
-  profileButton.className = 'profile-button';
-
-  const inviteLink = document.createElement('a');
-  inviteLink.href = server.invite;
-  inviteLink.target = '_blank';
-  inviteLink.className = 'button button-primary';
-  inviteLink.style.textAlign = 'center';
-  inviteLink.style.marginTop = '-5%';
-  inviteLink.style.marginBottom = '-5%';
-  const icon = document.createElement('i');
-  icon.className = 'fab fa-discord icon-left';
-  inviteLink.appendChild(icon);
-  inviteLink.innerHTML += 'Entrar';
-
-  profileButton.appendChild(inviteLink);
-  productOrder.appendChild(profileButton);
-  serverHtml.appendChild(productOrder);
-
   return serverHtml;
 }
 
-// Formatage des nombres avec apostrophe
+// Formater un nombre avec des séparateurs de milliers
 function formatNumber(number) {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
