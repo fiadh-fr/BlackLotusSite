@@ -10,13 +10,13 @@ const lynxTab = document.querySelector("#lynx");
 fetch("server.json")
   .then(response => response.json())
   .then(data => {
-    if (!data.constellations) {
-      console.log("No data available.");
+    if (!data.constelations) {
+      console.log("n/a");
       return;
     }
 
     // Traitement des données pour chaque catégorie
-    for (const category of data.constellations) {
+    for (const category of data.constelations) {
       // Récupération des données de la catégorie
       const categoryData = data[category.name] || [];
 
