@@ -75,86 +75,144 @@
 						<p>
 							Lista de todos os servidores inscritos e membros de nossa rede.
 					</header>
-									<div class="tab-group tab-group-switch-style">
-										<script>
-import axios from 'axios';
-
-const getJsonData = async () => {
-  const response = await axios.get('./data.json');
-  if (response.status === 200) {
-    return response.data;
-  } else {
-    throw new Error('Error loading JSON data');
-  }
-};
-
-const jsonData = await getJsonData();
-
-const html = `
-<div class="tab-group tab-group-switch-style">
-`;
-
-for (const constellation of jsonData.constellations) {
-  const tabItem = `
-    <div class="tab-item" data-title="${constellation.name}" id="${constellation.name}">
-  `;
-
-  for (const server of constellation.servers) {
-    const isBooster = server.booster;
-    const icon = server.icon.replace('?size=1024', '');
-    const displayName = server.displayName;
-    const members = server.members;
-    const tags = server.tags.join(' ');
-    const invite = server.invite;
-
-    const productBox = isBooster ? `
-      <div class="product-box product-box-popular">
-        <div class="product-popular">Em destaque</div>
-    ` : `
-      <div class="product-box">
-    `;
-
-    const profileContainer = `
-      <div class="profile-container">
-        <div class="profile-pic">
-          <img src="${icon}" />
-        </div>
-        <div class="profile-text">
-          <h3><mark>${displayName}</mark></h3>
-          <small class="text-color-gray"><strong>${members}</strong> membros</small>
-          <ul class="tags" style="margin-top: 5px">
-            <li><a href="#anime">${tags}</a></li>
-          </ul>
-        </div>
-      </div>
-    `;
-
-    const productOrder = `
-      <div class="product-order">
-        <div class="profile-button">
-          <a href="${invite}" target="_blank" class="button button-primary" style="text-align: center; margin-top: -5%; margin-bottom: -5%;">
-            <i class="fab fa-discord icon-left"></i>Entrar
-          </a>
-        </div>
-      </div>
-    `;
-
-    const product = `
-      ${productBox}
-        ${profileContainer}
-        ${productOrder}
-      ${productBox}
-    `;
-
-    html += tabItem + product + `</div>`;
-  }
-}
-
-html += `</div>`;
-
-document.querySelector('.communities').innerHTML = html;
-										</script>
+					<div class="tab-group tab-group-switch-style">
+						<div class="tab-item" data-title="Hydrus" id="hydrus">
+							<div class="column-row align-center-bottom">
+								<div class="column-33">
+								  <div class="product-box product-box-popular">
+									<div class="product-popular">Em destaque</div>
+									  <div class="profile-container ">
+										<div class="profile-pic">
+											<img src="https://cdn.discordapp.com/icons/614904136437334044/a_e5038e46e39b6d151e961e8cd8d14208.gif" />
+										</div>
+										<div class="profile-text">
+										  <h3><mark>AnimesK</mark></h3>
+										  <small class="text-color-gray"
+											><strong>34'976</strong> membros</small
+										  >
+										  <ul class="tags" style="margin-top: 5px">
+											<li>
+											  <a href="#anime" style="font-weight: 10px;">#anime</a>
+											</li>
+											<li>
+											  <a href="#anime">#games</a>
+											</li>
+										  </ul>
+										</div>
+									  </div>
+									  <div class="product-order">
+									<div class="profile-button">
+									  <a
+										href="https://discord.gg/KyGv6b4r6A"
+										target="_blank"
+										class="button button-primary"
+										style="
+										  text-align: center;
+										  margin-top: -5%;
+										  margin-bottom: -5%;
+										"
+										><i class="fab fa-discord icon-left"></i>Entrar</a
+									  >
 									</div>
+								  </div>
+								  </div>
+								</div>
+								<div class="column-33">
+								  <div class="product-box">
+									<div class="profile-container">
+									  <div class="profile-pic">
+										<img
+										  src="https://cdn.discordapp.com/icons/651787975264436275/a_3ec44800dfdfe33e0763d99571db1420.gif"/>
+									  </div>
+									  <div class="profile-text">
+										<h3 style="color:black ;">Zak</h3>
+										<small class="text-color-gray"
+										  ><strong>61'353</strong> membros</small
+										>
+										<ul class="tags" style="margin-top: 5px">
+										  <li>
+											<a href="#anime" style="font-weight: 10px;">#youtuber</a>
+										  </li>
+										  <li>
+											<a href="#anime">#games</a>
+										  </li>
+										</ul>
+									  </div>
+									</div>
+									<div class="product-order">
+								  <div class="profile-button">
+									<a
+									  href="https://discord.gg/2fWbpPjG2E"
+									  target="_blank"
+									  class="button button-primary"
+									  style="
+										text-align: center;
+										margin-top: -5%;
+										margin-bottom: -5%;
+									  "
+									  ><i class="fab fa-discord icon-left"></i>Entrar</a
+									>
+								  </div>
+								</div>
+								  </div>
+								</div>
+								<div class="column-33">
+								  <div class="product-box">
+									<div class="profile-container">
+									  <div class="profile-pic">
+										<img
+										  src="https://cdn.discordapp.com/icons/801894798641332254/ded8bf03ea15543d1f1275bcc0ac9a3b.png" style="border-radius:20px;"
+										/>
+									  </div>
+									  <div class="profile-text">
+										<h3 style="color:black ;">It's a Trap</h3>
+										<small class="text-color-gray"
+										  ><strong>307'387</strong> membros</small
+										>
+										<ul class="tags" style="margin-top: 5px">
+										  <li>
+											<a href="#anime" style="font-weight: 10px;">#youtuber</a>
+										  </li>
+										  <li>
+											<a href="#anime">#games</a>
+										  </li>
+										</ul>
+									  </div>
+									</div>
+									<div class="product-order">
+								  <div class="profile-button">
+									<a
+									  href="https://discord.gg/its"
+									  target="_blank"
+									  class="button button-primary"
+									  style="
+										text-align: center;
+										margin-top: -5%;
+										margin-bottom: -5%;
+									  "
+									  ><i class="fab fa-discord icon-left"></i>Entrar</a
+									>
+								  </div>
+								</div>
+								  </div>
+								</div>
+							  </div>
+						</div>
+						<div class="tab-item" data-title="Byakko" id="byakko">
+							<!-- Contenu de la constellation Byakko -->
+						  </div>
+						  <div class="tab-item" data-title="Seiryu" id="byakko">
+							<!-- Contenu de la constellation Byakko -->
+						  </div>
+						  <div class="tab-item" data-title="Suyaku" id="byakko">
+							<!-- Contenu de la constellation Byakko -->
+						  </div>
+						  <div class="tab-item" data-title="Genbu" id="byakko">
+							<!-- Contenu de la constellation Byakko -->
+						  </div>
+						  <div class="tab-item" data-title="Lynx" id="byakko">
+							<!-- Contenu de la constellation Byakko -->
+						  </div>
 					<div class="column-row align-center">
 						<div class="column-50 text-align-center">
 							<p>
