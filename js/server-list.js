@@ -25,18 +25,18 @@ for (const category in data) {
       const categoryContainer = document.createElement('div');
       categoryContainer.className = 'category-container';
 
-      // Vérification du booster
-      const boosterData = categoryData.filter(server => server.booster === true);
-      const nonBoosterData = categoryData.filter(server => server.booster !== false);
+      // Vérification du partner
+      const partnerData = categoryData.filter(server => server.partner === true);
+      const nonpartnerData = categoryData.filter(server => server.partner !== false);
 
-      // Ajout des serveurs booster
-      boosterData.forEach(server => {
+      // Ajout des serveurs partner
+      partnerData.forEach(server => {
         const serverHtml = createServerHTML(server);
         categoryContainer.appendChild(serverHtml);
       });
 
       // Ajout des autres serveurs
-      nonBoosterData.forEach(server => {
+      nonpartnerData.forEach(server => {
         const serverHtml = createServerHTML(server);
         categoryContainer.appendChild(serverHtml);
       });
@@ -70,7 +70,7 @@ for (const category in data) {
 // Création du HTML pour un serveur
 function createServerHTML(server) {
   const serverHtml = document.createElement('div');
-  serverHtml.className = server.booster ? 'product-box product-box-popular' : 'product-box';
+  serverHtml.className = server.partner ? 'product-box product-box-popular' : 'product-box';
 
   const profileContainer = document.createElement('div');
   profileContainer.className = 'profile-container';

@@ -8,6 +8,6 @@ document.body.appendChild(widgetbot);
 widgetbot.onload = () => {
   new Crate({
     server: '896047806454837278', // Black Lótus
-    channel: '1096060003372241070' // #᲼᲼site-chat
+    channel: '1123374694603698287' // #᲼᲼site-chat
   });
 };
