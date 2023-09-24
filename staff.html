@@ -1,25 +1,3 @@
-<?php
-$motDePasseCorrect = "votre_mot_de_passe"; // Remplacez "votre_mot_de_passe" par le mot de passe souhaité
-
-// Vérifie si le formulaire a été soumis
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $motDePasseSaisi = $_POST["motDePasse"];
-
-    // Vérifie si le mot de passe saisi est correct
-    if ($motDePasseSaisi === $motDePasseCorrect) {
-        afficherContenuProtege();
-        exit(); // Quitte le script pour éviter d'afficher le formulaire de saisie du mot de passe une fois le contenu protégé affiché
-    } else {
-        echo "Mot de passe incorrect.";
-    }
-}
-
-// Fonction pour afficher le contenu protégé
-function afficherContenuProtege() {
-    echo "Bienvenue sur la page protégée !";
-    // Affichez ici le contenu que vous souhaitez protéger
-}
-?>
 <!DOCTYPE html>
 <html lang="pt">
   <head>
@@ -27,11 +5,11 @@ function afficherContenuProtege() {
     <title>The Black Lotus | Form Staff</title>
     <meta
       name="description"
-      content="A aliança de servidores Black Lotus é a maior aliança lusófona no Discord e fornece a melhor experiência na plataforma, combinando experiência e ousadia."
+      content="A associação de servidores Black Lotus é a maior associação lusófona no Discord e fornece a melhor experiência na plataforma, combinando experiência e ousadia."
     />
     <meta
       name="keywords"
-      content="Black Lotus, aliança, servidores, Discord, união, ajuda mútua, experiência, rede de servidores, alta qualidade, configurações de privacidade, gerenciamento de permissões, raids, nukes, hackers, bot próprio, parcerias, troca de experiências, segurança, networking, divulgação, crescimento, suporte, conhecimento, comunidade lusófona"
+      content="Black Lotus, associação, servidores, Discord, união, ajuda mútua, experiência, rede de servidores, alta qualidade, configurações de privacidade, gerenciamento de permissões, raids, nukes, hackers, bot próprio, parcerias, troca de experiências, segurança, networking, divulgação, crescimento, suporte, conhecimento, comunidade lusófona"
     />
     <meta
       name="viewport"
@@ -70,7 +48,7 @@ function afficherContenuProtege() {
     <meta name="twitter:title" content="The Black Lotus | Form Staff" />
     <meta
       name="twitter:description"
-      content="A aliança de servidores Black Lotus é a maior aliança lusófona no Discord e fornece a melhor experiência na plataforma, combinando experiência e ousadia."
+      content="A associação de servidores Black Lotus é a maior associação lusófona no Discord e fornece a melhor experiência na plataforma, combinando experiência e ousadia."
     />
     <meta
       name="twitter:image"
