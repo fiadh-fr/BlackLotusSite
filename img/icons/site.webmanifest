@@ -1,6 +1,6 @@
 {
-    "name": "Black L\u00f3tus",
-    "short_name": "Black L\u00f3tus",
+    "name": "The Black Lotus",
+    "short_name": "The Black Lotus",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -8,12 +8,12 @@
             "type": "image/png"
         },
         {
-            "src": "/android-chrome-256x256.png",
-            "sizes": "256x256",
+            "src": "/android-chrome-384x384.png",
+            "sizes": "384x384",
             "type": "image/png"
         }
     ],
-    "theme_color": "#f7f7f7",
-    "background_color": "#f7f7f7",
+    "theme_color": "#6678eb",
+    "background_color": "#6678eb",
     "display": "standalone"
 }
