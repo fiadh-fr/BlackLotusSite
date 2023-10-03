@@ -800,7 +800,7 @@ $_document.on("DOMContentLoaded", function () {
         }
 
         if (select_active_data_price && $_product_price.length) {
-          $_product_price.html(select_active_data_price);
+          $_product_price(select_active_data_price);
 
           if (select_active_data_term) {
             $_product_price.append(
@@ -976,7 +976,7 @@ $_document.on("DOMContentLoaded", function () {
                 args.val_configurator_input != 1
                   ? args.val_configurator_title_plural
                   : args.val_configurator_title);
-              args.el_configurator_title.html(args.val_configurator_input);
+              args.el_configurator_title(args.val_configurator_input);
             }
 
             if (args.el_product_configurator_total.length) {
@@ -998,7 +998,7 @@ $_document.on("DOMContentLoaded", function () {
                 }
               });
 
-              args.el_product_configurator_total.html(
+              args.el_product_configurator_total(
                 args.val_product_configurator_currency.replace(
                   "%",
                   Math.round(configurator_input_total * Math.pow(10, 4)) /
@@ -1146,15 +1146,13 @@ $_document.on("DOMContentLoaded", function () {
           });
 
           $_configurator_input.before(
-            $_configurator_group
-              .html($_configurator_title)
-              .append(
-                configurator_input_data_description
-                  ? '<span class="label">' +
-                      configurator_input_data_description +
-                      "</span>"
-                  : ""
-              )
+            $_configurator_group($_configurator_title).append(
+              configurator_input_data_description
+                ? '<span class="label">' +
+                    configurator_input_data_description +
+                    "</span>"
+                : ""
+            )
           );
           $_configurator_input.before(
             $_configurator_slider.prepend($_configurator_range)
@@ -1177,7 +1175,7 @@ $_document.on("DOMContentLoaded", function () {
   // Generate line numbers for pre code
   $("pre.pre-code").each(function () {
     var $_ul = $("<ul></ul>"),
-      code = $(this).html().trim("\n"),
+      code = $(this)().trim("\n"),
       code_lines = code.split("\n").length;
 
     if (code_lines) {

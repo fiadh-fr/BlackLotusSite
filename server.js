@@ -26,9 +26,9 @@ const servidoresFile = "./servidores.json";
 // Servir les fichiers statiques à partir de la racine du projet
 app.use(express.static(path.join(__dirname)));
 
-// Gérer la page d'accueil (index.html par défaut)
+// Gérer la page d'accueil (index par défaut)
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "./index.html"));
+  res.sendFile(path.join(__dirname, "./index"));
 });
 
 app.get("/constellations", async (req, res) => {
@@ -52,7 +52,7 @@ app.get("/constellations", async (req, res) => {
 // Gérer les erreurs 404
 app.use(function (req, res, next) {
   res.status(404);
-  res.redirect("/404.html");
+  res.redirect("/404");
 });
 
 httpServer.listen(80, () => {
