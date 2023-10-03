@@ -1,64 +1,81 @@
-require("dotenv").config(); // Charger les variables d'environnement
+require("dotenv").config(); // Load environment variables
 
 const express = require("express");
 const axios = require("axios");
-const path = require("path");
-const https = require("https");
 const http = require("http");
+const https = require("https");
 const fs = require("fs");
 
 const token = process.env.API_TOKEN;
 const apiUrl = process.env.API_URL;
+const port = process.env.PORT || 443;
+
+const app = express();
 
 const options = {
   key: fs.readFileSync("./ssl/key.pem", "utf8"),
   cert: fs.readFileSync("./ssl/cert.pem", "utf8"),
 };
-const port = process.env.PORT || 443;
-
-const app = express();
-
-const httpServer = http.createServer(app);
-const httpsServer = https.createServer(options, app);
 
 const servidoresFile = "./servidores.json";
 
-// Servir les fichiers statiques à partir de la racine du projet
-app.use(express.static(path.join(__dirname)));
+// Middleware to validate environment variables
+if (!token || !apiUrl) {
+  console.error("Please define API_TOKEN and API_URL environment variables.");
+  process.exit(1);
+}
 
-// Gérer la page d'accueil (index.html par défaut)
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "./index.html"));
+// Middleware for GZIP/deflate compression
+const compression = require("compression");
+app.use(compression());
+
+// Serve static files from the project root
+app.use(express.static(__dirname));
+
+// Middleware for error handling
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
 });
 
-app.get("/constellations", async (req, res) => {
+// Route handling
+const router = express.Router();
+
+// Route for pages
+router.get("/:page/", (req, res) => {
+  const page = req.params.page;
+  const filePath = `${__dirname}/${page}.html`;
+  fs.promises
+    .access(filePath, fs.constants.F_OK)
+    .then(() => res.sendFile(filePath))
+    .catch(() => res.status(404).sendFile(`${__dirname}/404.html`));
+});
+
+// Route for constellations
+router.get("https://kikyo.website:1331/api/constellations", async (req, res) => {
   try {
     const { data } = await axios.get("https://kikyo.website:1331/api");
-    fs.writeFile(servidoresFile, JSON.stringify(data), (err) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Internal Server Error");
-      } else {
-        console.log(`File ${servidoresFile} written successfully!`);
-      }
-    });
+    await fs.promises.writeFile(servidoresFile, JSON.stringify(data));
+    console.log(`File ${servidoresFile} written successfully!`);
     res.json(data);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Internal Server Error");
+    next(error);
   }
 });
 
-// Gérer les erreurs 404
-app.use(function (req, res, next) {
-  res.status(404);
-  res.redirect("/404.html");
-});
+app.use("/", router);
+
+// HTTP and HTTPS servers
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(options, app);
 
 httpServer.listen(80, () => {
   console.log("HTTP Server running on port 80");
 });
+
 httpsServer.listen(port, () => {
   console.log("HTTPS Server running on port 443");
 });
+
 console.log(`Server started`);

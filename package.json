@@ -1,6 +1,6 @@
 {
   "name": "the-black-lotus",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Official Website of The Black Lotus",
   "main": "server.js",
   "scripts": {
@@ -9,10 +9,33 @@
   },
   "dependencies": {
     "axios": "^1.3.4",
+    "compression": "^1.7.4",
     "express": "^4.18.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15",
-    "dotenv": "^10.0.0"
-  }
+    "dotenv": "^10.0.0",
+    "nodemon": "^2.0.15"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nukenin-Endo/BlackLotusSite.git"
+  },
+  "keywords": [
+    "theblacklotus",
+    "discord",
+    "server",
+    "comunidade",
+    "brasil",
+    "portugal",
+    "portugues",
+    "portuguese",
+    "help",
+    "growth."
+  ],
+  "author": "Fiadh aka Nukenin",
+  "license": "2023 © - The Black Lotus. All rights reserved.",
+  "bugs": {
+    "url": "https://github.com/Nukenin-Endo/BlackLotusSite/issues"
+  },
+  "homepage": "https://github.com/Nukenin-Endo/BlackLotusSite#readme"
 }
