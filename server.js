@@ -23,6 +23,18 @@ const httpsServer = https.createServer(options, app);
 
 const servidoresFile = "./servidores.json";
 
+
+// Middleware pour gérer les redirections
+app.use((req, res, next) => {
+  // Récupérer l'URL sans l'extension ".html"
+  const originalUrl = req.originalUrl;
+  if (originalUrl.endsWith('.html')) {
+    const redirectTo = originalUrl.slice(0, -5) + '/';
+    return res.redirect(301, redirectTo);
+  }
+  next();
+});
+
 // Servir les fichiers statiques à partir de la racine du projet
 app.use(express.static(path.join(__dirname)));
 
@@ -55,6 +67,13 @@ app.use(function (req, res, next) {
   res.redirect("/404");
 });
 
+/*
+// démarre le serveur
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Le serveur est en cours d'exécution sur le port ${port}...`);
+});
+
+ */
 httpServer.listen(80, () => {
   console.log("HTTP Server running on port 80");
 });
