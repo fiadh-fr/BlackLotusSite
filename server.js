@@ -8,7 +8,7 @@ const fs = require("fs");
 
 const token = process.env.API_TOKEN;
 const apiUrl = process.env.API_URL;
-const port = process.env.PORT || 443;
+const port = 443;
 
 const app = express();
 
@@ -18,6 +18,42 @@ const options = {
 };
 
 const servidoresFile = "./servidores.json";
+
+// Gestion du sous-domaine unit
+const unitRouter = express.Router();
+
+// Middleware pour vérifier le sous-domaine
+app.use((req, res, next) => {
+  const host = req.headers.host;
+  if (host === "unit.theblacklotus.fr") {
+    // Le sous-domaine est "unit.theblacklotus.fr", redirige vers la page souhaitée
+    return res.redirect("/fazer-parte");
+  }
+  next(); // Passe au middleware suivant
+});
+
+// Middleware pour vérifier le chemin de l'URL
+unitRouter.use((req, res, next) => {
+  const urlPath = req.path;
+
+  // Vérifiez si le chemin commence par /unit/
+  if (urlPath.startsWith('/unit/')) {
+    // Le chemin commence par /unit/, donc il est dirigé vers le sous-domaine unit
+    next();
+  } else {
+    // Le chemin ne commence pas par /unit/, renvoyez une erreur 404
+    res.status(404).send('Page non trouvée');
+  }
+});
+
+// Route dynamique pour toutes les pages du sous-domaine unit
+unitRouter.get('/:page', (req, res) => {
+  const pageName = req.params.page;
+  res.send(`Bienvenue sur la page ${pageName} du sous-domaine unit`);
+});
+
+app.use('unit.theblacklotus.fr', unitRouter);
+
 
 // Middleware to validate environment variables
 if (!token || !apiUrl) {
@@ -49,19 +85,6 @@ router.get("/:page/", (req, res) => {
     .access(filePath, fs.constants.F_OK)
     .then(() => res.sendFile(filePath))
     .catch(() => res.status(404).sendFile(`${__dirname}/404.html`));
-});
-
-// Route for constellations
-router.get("https://kikyo.website:1331/api/constellations", async (req, res) => {
-  try {
-    const { data } = await axios.get("https://kikyo.website:1331/api");
-    await fs.promises.writeFile(servidoresFile, JSON.stringify(data));
-    console.log(`File ${servidoresFile} written successfully!`);
-    res.json(data);
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
 });
 
 app.use("/", router);
