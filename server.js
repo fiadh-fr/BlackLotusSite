@@ -1,21 +1,18 @@
-// Load environment variables from a .env file
-require("dotenv").config();
+require("dotenv").config(); // Load environment variables
 
-// Required dependencies
 const express = require("express");
+const axios = require("axios");
 const http = require("http");
+const https = require("https");
 const fs = require("fs");
 
-// Load API token and URL from environment variables
 const token = process.env.API_TOKEN;
 const apiUrl = process.env.API_URL;
-
 const port = 3000;
 
 const app = express();
 
-// API The Black Lotus
-const serversFile = "./servers.json";
+const servidoresFile = "./servidores.json";
 
 // Middleware to validate environment variables
 if (!token || !apiUrl) {
@@ -36,25 +33,21 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something broke!");
 });
 
-// Create a router for defining routes
+// Route handling
 const router = express.Router();
 
 // Route for pages
 router.get("/:page/", (req, res) => {
   const page = req.params.page;
   const filePath = `${__dirname}/${page}.html`;
-
-  // Check if the requested HTML file exists, and serve it
   fs.promises
     .access(filePath, fs.constants.F_OK)
     .then(() => res.sendFile(filePath))
     .catch(() => res.status(404).sendFile(`${__dirname}/404.html`));
 });
 
-// Use the defined router for handling routes
 app.use("/", router);
 
-// Create an HTTP server and listen on the specified port
 app.listen(port, () => {
   console.log(`Server running on port: ${port}`);
 });
