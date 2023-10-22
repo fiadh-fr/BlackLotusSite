@@ -8,14 +8,9 @@ const fs = require("fs");
 
 const token = process.env.API_TOKEN;
 const apiUrl = process.env.API_URL;
-const port = 443;
+const port = 3000; // 443 https / 80 http / 3000 reverse proxy
 
 const app = express();
-
-const options = {
-  key: fs.readFileSync("./ssl/key.pem", "utf8"),
-  cert: fs.readFileSync("./ssl/cert.pem", "utf8"),
-};
 
 const servidoresFile = "./servidores.json";
 
@@ -93,12 +88,13 @@ app.use("/", router);
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(options, app);
 
-httpServer.listen(80, () => {
-  console.log("HTTP Server running on port 80");
-});
+// HTTP 80
+// httpServer.listen(80, () => {
+//  console.log("HTTP Server running on port 80");
+// });
 
 httpsServer.listen(port, () => {
-  console.log("HTTPS Server running on port 443");
+  console.log('HTTPS Server running on port:', port);
 });
 
 console.log(`Server started`);
