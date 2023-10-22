@@ -1,54 +1,21 @@
-require("dotenv").config(); // Load environment variables
+// Load environment variables from a .env file
+require("dotenv").config();
 
+// Required dependencies
 const express = require("express");
-const axios = require("axios");
 const http = require("http");
-const https = require("https");
 const fs = require("fs");
 
+// Load API token and URL from environment variables
 const token = process.env.API_TOKEN;
 const apiUrl = process.env.API_URL;
-const port = 3000; // 443 https / 80 http / 3000 reverse proxy
+
+const port = 3000;
 
 const app = express();
 
-const servidoresFile = "./servidores.json";
-
-// Gestion du sous-domaine unit
-const unitRouter = express.Router();
-
-// Middleware pour vérifier le sous-domaine
-app.use((req, res, next) => {
-  const host = req.headers.host;
-  if (host === "unit.theblacklotus.fr") {
-    // Le sous-domaine est "unit.theblacklotus.fr", redirige vers la page souhaitée
-    return res.redirect("/fazer-parte");
-  }
-  next(); // Passe au middleware suivant
-});
-
-// Middleware pour vérifier le chemin de l'URL
-unitRouter.use((req, res, next) => {
-  const urlPath = req.path;
-
-  // Vérifiez si le chemin commence par /unit/
-  if (urlPath.startsWith('/unit/')) {
-    // Le chemin commence par /unit/, donc il est dirigé vers le sous-domaine unit
-    next();
-  } else {
-    // Le chemin ne commence pas par /unit/, renvoyez une erreur 404
-    res.status(404).send('Page non trouvée');
-  }
-});
-
-// Route dynamique pour toutes les pages du sous-domaine unit
-unitRouter.get('/:page', (req, res) => {
-  const pageName = req.params.page;
-  res.send(`Bienvenue sur la page ${pageName} du sous-domaine unit`);
-});
-
-app.use('unit.theblacklotus.fr', unitRouter);
-
+// API The Black Lotus
+const serversFile = "./servers.json";
 
 // Middleware to validate environment variables
 if (!token || !apiUrl) {
@@ -69,32 +36,27 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something broke!");
 });
 
-// Route handling
+// Create a router for defining routes
 const router = express.Router();
 
 // Route for pages
 router.get("/:page/", (req, res) => {
   const page = req.params.page;
   const filePath = `${__dirname}/${page}.html`;
+
+  // Check if the requested HTML file exists, and serve it
   fs.promises
     .access(filePath, fs.constants.F_OK)
     .then(() => res.sendFile(filePath))
     .catch(() => res.status(404).sendFile(`${__dirname}/404.html`));
 });
 
+// Use the defined router for handling routes
 app.use("/", router);
 
-// HTTP and HTTPS servers
-const httpServer = http.createServer(app);
-const httpsServer = https.createServer(options, app);
-
-// HTTP 80
-// httpServer.listen(80, () => {
-//  console.log("HTTP Server running on port 80");
-// });
-
-httpsServer.listen(port, () => {
-  console.log('HTTPS Server running on port:', port);
+// Create an HTTP server and listen on the specified port
+app.listen(port, () => {
+  console.log(`Server running on port: ${port}`);
 });
 
 console.log(`Server started`);
